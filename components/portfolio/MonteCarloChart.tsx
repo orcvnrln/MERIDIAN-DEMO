@@ -7,8 +7,9 @@ import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, ReferenceLine, Tool
 import { Activity, Info, TrendingUp, TrendingDown } from "lucide-react";
 
 interface MonteCarloChartProps {
-    isVisible: boolean;
+    isVisible?: boolean;
 }
+
 
 // Seeded random generator for consistent SSR/CSR values
 const seededRandom = (seed: number) => {
@@ -53,7 +54,7 @@ function getPercentile(values: number[], percentile: number): number {
     return sorted[index];
 }
 
-export function MonteCarloChart({ isVisible }: MonteCarloChartProps) {
+export function MonteCarloChart({ isVisible = true }: MonteCarloChartProps) {
     const [animationProgress, setAnimationProgress] = useState(0);
 
     const simulationData = useMemo(() => {

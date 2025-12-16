@@ -3,18 +3,46 @@
 // Replace with real API calls when integrating backend
 
 export interface PortfolioMetrics {
+    // Core Values
     totalValue: number;
     todaysPL: number;
     todaysPLPercent: number;
     openPositions: number;
     winRate: number;
     winRateChange: number;
+
+    // Returns
     ytdReturn: number;
+    annualizedReturn: number;
+    cumulativeReturn: number;
+    spComparison: number;  // vs S&P 500 %
+
+    // Risk Metrics
     var95: number;
+    var99: number;
     maxDrawdown: number;
+    volatility: number;
+
+    // Ratios
     sharpeRatio: number;
+    sortinoRatio: number;
+    calmarRatio: number;
     beta: number;
+    alpha: number;
+
+    // Diversification
+    diversificationIndex: number;  // 0-100
+
+    // AI Scores
     aiConfidence: number;
+    fundamentalAIScore: number;  // 0-100
+    geopoliticalRiskIndex: number;  // 0-100 (GRI)
+
+    // Macro Context
+    fedRate: number;
+    inflation: number;
+    fedRateImpact: string;
+    inflationImpact: string;
 }
 
 export interface Position {
@@ -55,24 +83,113 @@ export interface RiskMetric {
     };
 }
 
+// Stress Test Scenario
+export interface StressScenario {
+    id: string;
+    name: string;
+    description: string;
+    impact: number;  // % impact on portfolio
+    probability: "low" | "medium" | "high";
+}
+
+// What-If Scenario
+export interface WhatIfScenario {
+    id: string;
+    name: string;
+    parameters: {
+        marketChange: number;
+        sectorShift: string;
+        volatilityChange: number;
+    };
+    projectedImpact: number;
+}
+
 // ======================
 // MOCK DATA
 // ======================
 
 export const mockPortfolioMetrics: PortfolioMetrics = {
-    totalValue: 127450.32,
-    todaysPL: 436.15,
-    todaysPLPercent: 0.34,
+    // Core Values
+    totalValue: 487250.32,
+    todaysPL: 3421.15,
+    todaysPLPercent: 0.70,
     openPositions: 12,
     winRate: 68.5,
     winRateChange: 2.3,
+
+    // Returns
     ytdReturn: 24.5,
+    annualizedReturn: 18.7,
+    cumulativeReturn: 59.2,
+    spComparison: 6.8,  // Outperforming S&P by 6.8%
+
+    // Risk Metrics
     var95: 18200,
-    maxDrawdown: 32.1,
+    var99: 28500,
+    maxDrawdown: 8.2,
+    volatility: 24.5,
+
+    // Ratios
     sharpeRatio: 1.82,
+    sortinoRatio: 2.15,
+    calmarRatio: 2.28,
     beta: 1.2,
+    alpha: 4.5,
+
+    // Diversification
+    diversificationIndex: 72,
+
+    // AI Scores
     aiConfidence: 87,
+    fundamentalAIScore: 78,
+    geopoliticalRiskIndex: 42,
+
+    // Macro Context
+    fedRate: 5.25,
+    inflation: 3.2,
+    fedRateImpact: "Yüksək faiz dərəcəsi texnologiya səhmlərini əzir. Portfeldə -2.3% təsir gözlənilir.",
+    inflationImpact: "İnflyasiya normadan yüksəkdir. Əmtəə aktivləri və TIPS təklif olunur.",
 };
+
+// Stress Test Scenarios
+export const mockStressScenarios: StressScenario[] = [
+    {
+        id: "market-crash",
+        name: "Market Crash (-20%)",
+        description: "S&P 500-in 20% düşməsi",
+        impact: -16.5,
+        probability: "low",
+    },
+    {
+        id: "fed-hike",
+        name: "Fed +50bp Rate Hike",
+        description: "Gözlənilməz faiz artımı",
+        impact: -6.2,
+        probability: "medium",
+    },
+    {
+        id: "crypto-crash",
+        name: "Crypto -40% Crash",
+        description: "Bitcoin və altcoin çöküşü",
+        impact: -8.8,
+        probability: "medium",
+    },
+    {
+        id: "geopolitical",
+        name: "Geopolitik Böhran",
+        description: "Regional münaqişə eskalasiyası",
+        impact: -12.3,
+        probability: "low",
+    },
+];
+
+// Geopolitical Risk Factors
+export const mockGeopoliticalFactors = [
+    { region: "Orta Şərq", risk: 65, trend: "up" },
+    { region: "Şərqi Avropa", risk: 72, trend: "stable" },
+    { region: "Şərqi Asiya", risk: 48, trend: "down" },
+    { region: "ABŞ-Çin", risk: 58, trend: "up" },
+];
 
 export const mockPositions: Position[] = [
     {

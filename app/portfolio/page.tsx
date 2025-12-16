@@ -37,6 +37,7 @@ import {
   formatPercent,
   getPositionTypeColor,
 } from "@/lib/mock-data/portfolio";
+
 // Import components
 import { RecentTransactions } from "@/components/portfolio/RecentTransactions";
 import { PortfolioAIAdvisor } from "@/components/portfolio/PortfolioAIAdvisor";
@@ -44,11 +45,21 @@ import { AIBotButton } from "@/components/portfolio/AIBotButton";
 import { PortfolioPerformanceChart } from "@/components/portfolio/PortfolioPerformanceChart";
 
 // Import dashboard components
-import { TopSummaryCards } from "@/components/portfolio/TopSummaryCards";
+import { ComprehensiveMetricsGrid } from "@/components/portfolio/ComprehensiveMetricsGrid";
 import { AssetAllocationDonut } from "@/components/portfolio/AssetAllocationDonut";
 import { RiskContributionWaterfall } from "@/components/portfolio/RiskContributionWaterfall";
 import { RiskControlsPanel } from "@/components/portfolio/RiskControlsPanel";
 import { RiskAnalysisCards } from "@/components/portfolio/RiskAnalysisCards";
+
+// Import new AI & Risk panels
+import { AIPortfolioScore } from "@/components/portfolio/AIPortfolioScore";
+import { GeopoliticalRiskPanel } from "@/components/portfolio/GeopoliticalRiskPanel";
+import { MacroContextPanel } from "@/components/portfolio/MacroContextPanel";
+import { StressTestResults } from "@/components/portfolio/StressTestResults";
+
+// Import existing analysis components
+import { CorrelationMatrix } from "@/components/portfolio/CorrelationMatrix";
+import { MonteCarloChart } from "@/components/portfolio/MonteCarloChart";
 
 // Import sidebar
 import { AIAlertsSidebar } from "@/components/portfolio/risk/AIAlertsSidebar";
@@ -147,8 +158,8 @@ export default function PortfolioPage() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
             >
-              {/* Top 6 Summary Cards */}
-              <TopSummaryCards />
+              {/* Comprehensive Metrics Grid - All 25+ metrics */}
+              <ComprehensiveMetricsGrid />
 
               {/* Two-column layout: Allocation + Risk Contribution */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -156,11 +167,28 @@ export default function PortfolioPage() {
                 <RiskContributionWaterfall />
               </div>
 
-              {/* Risk Controls Panel */}
-              <RiskControlsPanel />
+              {/* Three-column: AI Score + GRI + Macro Context */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <AIPortfolioScore />
+                <GeopoliticalRiskPanel />
+                <MacroContextPanel />
+              </div>
 
               {/* Portfolio Performance Chart */}
-              <PortfolioPerformanceChart />
+              <div className="mb-6">
+                <PortfolioPerformanceChart />
+              </div>
+
+              {/* Correlation Matrix + Monte Carlo */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <CorrelationMatrix />
+                <MonteCarloChart />
+              </div>
+
+              {/* Stress Test Results */}
+              <div className="mb-6">
+                <StressTestResults />
+              </div>
 
               {/* Open Positions Table */}
               <div className="bg-[#12121a] border border-gray-800/50 rounded-xl">
@@ -258,6 +286,18 @@ export default function PortfolioPage() {
             >
               {/* Risk Analysis Cards */}
               <RiskAnalysisCards />
+
+              {/* Additional Risk Panels */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                <StressTestResults />
+                <GeopoliticalRiskPanel />
+              </div>
+
+              {/* Correlation + Monte Carlo */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                <CorrelationMatrix />
+                <MonteCarloChart />
+              </div>
             </motion.div>
           )}
 
@@ -303,3 +343,4 @@ export default function PortfolioPage() {
     </div>
   );
 }
+
