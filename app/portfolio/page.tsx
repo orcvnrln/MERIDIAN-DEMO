@@ -18,6 +18,7 @@ import {
   LineChart,
   Milestone,
   Shield,
+  ShoppingBag,
 } from "lucide-react";
 import {
   AreaChart,
@@ -63,6 +64,7 @@ import { MonteCarloChart } from "@/components/portfolio/MonteCarloChart";
 
 // Import sidebar
 import { AIAlertsSidebar } from "@/components/portfolio/risk/AIAlertsSidebar";
+import { QuickTradeModal } from "@/components/portfolio/QuickTradeModal";
 
 // Time period filter options
 const timePeriods = ["2 Years", "1 Year", "6 Months", "3 Months"] as const;
@@ -71,6 +73,11 @@ export default function PortfolioPage() {
   const [showAIAdvisor, setShowAIAdvisor] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState<typeof timePeriods[number]>("2 Years");
   const [activeTab, setActiveTab] = useState<"overview" | "risk" | "history">("overview");
+  const [tradeModal, setTradeModal] = useState<{ isOpen: boolean; position: any; action: "buy" | "sell" }>({
+    isOpen: false,
+    position: null,
+    action: "buy"
+  });
 
   const metrics = mockPortfolioMetrics;
   const positions = mockPositions;
@@ -260,7 +267,25 @@ export default function PortfolioPage() {
                         </div>
                       </div>
                       <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-gray-400 hover:text-white">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setTradeModal({ isOpen: true, position, action: "buy" })}
+                          className="h-7 px-2 text-xs text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
+                        >
+                          <Plus className="w-3 h-3 mr-1" />
+                          Buy
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setTradeModal({ isOpen: true, position, action: "sell" })}
+                          className="h-7 px-2 text-xs text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                        >
+                          <TrendingDown className="w-3 h-3 mr-1" />
+                          Sell
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-gray-400 hover:text-amber-400 hover:bg-amber-500/10">
                           <Bell className="w-4 h-4" />
                         </Button>
                       </div>
@@ -339,6 +364,16 @@ export default function PortfolioPage() {
             <PortfolioAIAdvisor />
           </motion.div>
         </motion.div>
+      )}
+
+      {/* QuickTradeModal */}
+      {tradeModal.isOpen && tradeModal.position && (
+        <QuickTradeModal
+          isOpen={tradeModal.isOpen}
+          onClose={() => setTradeModal({ isOpen: false, position: null, action: "buy" })}
+          position={tradeModal.position}
+          action={tradeModal.action}
+        />
       )}
     </div>
   );

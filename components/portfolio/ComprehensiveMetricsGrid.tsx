@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
     DollarSign,
     TrendingUp,
@@ -186,6 +187,7 @@ const statusColors = {
 };
 
 function MetricCardComponent({ card, index, size = "normal" }: { card: MetricCard; index: number; size?: "large" | "normal" | "small" }) {
+    const [showTooltip, setShowTooltip] = useState(false);
     const colors = statusColors[card.status];
     const sizeClasses = {
         large: "p-5",
@@ -198,20 +200,69 @@ function MetricCardComponent({ card, index, size = "normal" }: { card: MetricCar
         small: "text-base",
     };
 
+    const tooltipContent: Record<string, string> = {
+        "Total Portfolio Value": "Current market value of all your holdings including cash",
+        "Daily P&L": "Profit/Loss for today compared to yesterday's close",
+        "YTD Return": "Year-to-date return percentage. Outperforming S&P 500",
+        "Annualized Return": "Average yearly return if current performance continues",
+        "Max Drawdown": "Largest peak-to-trough decline in portfolio value",
+        "Volatility": "Standard deviation of returns - measures price swings",
+        "VaR 95%": "95% confidence: won't lose more than this in a day",
+        "VaR 99%": "99% confidence: won't lose more than this in a day",
+        "Sharpe": "Risk-adjusted return. >1.5 is excellent, >2 is exceptional",
+        "Sortino": "Like Sharpe but only considers downside volatility",
+        "Calmar": "Return divided by max drawdown. Higher is better",
+        "Beta": "Volatility vs market. 1.0 = same as market, >1 = more volatile",
+        "Alpha": "Excess return vs market benchmark after adjusting for risk",
+        "AI Score": "AI-powered fundamental analysis score (0-100)",
+        "GRI": "Geopolitical Risk Index - lower is better",
+        "Diversification": "Portfolio diversification score - higher is better",
+        "Win Rate": "Percentage of winning trades vs total trades",
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.03 }}
-            className={`bg-gradient-to-br ${colors.bg} border ${colors.border} rounded-xl ${sizeClasses[size]} relative overflow-hidden hover:scale-[1.02] transition-transform cursor-pointer`}
+            whileHover={{
+                scale: 1.03,
+                boxShadow: `0 0 30px ${card.status === 'green' ? 'rgba(16, 185, 129, 0.3)' :
+                    card.status === 'red' ? 'rgba(239, 68, 68, 0.3)' :
+                        card.status === 'yellow' ? 'rgba(234, 179, 8, 0.3)' :
+                            card.status === 'blue' ? 'rgba(6, 182, 212, 0.3)' :
+                                'rgba(168, 85, 247, 0.3)'
+                    }`
+            }}
+            onHoverStart={() => setShowTooltip(true)}
+            onHoverEnd={() => setShowTooltip(false)}
+            className={`bg-gradient-to-br ${colors.bg} border ${colors.border} rounded-xl ${sizeClasses[size]} relative overflow-hidden transition-all cursor-pointer group`}
         >
+            {/* Glow effect on hover */}
+            <motion.div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                    background: `radial-gradient(circle at 50% 0%, ${card.status === 'green' ? 'rgba(16, 185, 129, 0.15)' :
+                        card.status === 'red' ? 'rgba(239, 68, 68, 0.15)' :
+                            card.status === 'yellow' ? 'rgba(234, 179, 8, 0.15)' :
+                                card.status === 'blue' ? 'rgba(6, 182, 212, 0.15)' :
+                                    'rgba(168, 85, 247, 0.15)'
+                        }, transparent 70%)`
+                }}
+            />
+
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+
             <div className="relative">
                 <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-gray-400 uppercase tracking-wider">{card.label}</span>
-                    <div className={`w-7 h-7 rounded-lg ${colors.icon} flex items-center justify-center`}>
+                    <motion.div
+                        whileHover={{ rotate: 360 }}
+                        transition={{ duration: 0.5 }}
+                        className={`w-7 h-7 rounded-lg ${colors.icon} flex items-center justify-center`}
+                    >
                         {card.icon}
-                    </div>
+                    </motion.div>
                 </div>
                 <div className="flex items-baseline gap-2">
                     <span className={`${valueClasses[size]} font-bold text-white`}>{card.value}</span>
@@ -223,6 +274,23 @@ function MetricCardComponent({ card, index, size = "normal" }: { card: MetricCar
                     )}
                 </div>
             </div>
+
+            {/* Tooltip */}
+            <AnimatePresence>
+                {showTooltip && tooltipContent[card.label] && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 pointer-events-none"
+                    >
+                        <div className="bg-[#1a1a24] border border-gray-700 rounded-lg px-3 py-2 shadow-2xl max-w-xs">
+                            <p className="text-xs text-gray-300 text-center">{tooltipContent[card.label]}</p>
+                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-[#1a1a24] border-r border-b border-gray-700" />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 }
