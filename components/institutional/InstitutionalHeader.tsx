@@ -7,7 +7,7 @@ export const InstitutionalHeader: React.FC = () => (
         <div>
             <h1 className="text-3xl font-bold text-white mb-2">🏦 Institutional Intelligence</h1>
             <p className="text-slate-400">
-                Track "Smart Money" movements – Warren Buffett, Ray Dalio, and legendary investors
+                {`Track "Smart Money" movements – Warren Buffett, Ray Dalio, and legendary investors`}
             </p>
         </div>
         <div className="flex gap-2">

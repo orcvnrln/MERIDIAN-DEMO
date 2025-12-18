@@ -69,7 +69,7 @@ export default function AnalysisLayout({ children }: { children: ReactNode }) {
 }
 
 // Analysis Layout Provider
-export function AnalysisLayoutProvider({ children }: { children: ReactNode }) {
+function AnalysisLayoutProvider({ children }: { children: ReactNode }) {
     const pathname = usePathname();
     const [viewMode, setViewMode] = useState<"single" | "split">("single");
     const [leftPanel, setLeftPanel] = useState("fundamental");

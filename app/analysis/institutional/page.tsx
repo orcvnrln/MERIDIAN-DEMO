@@ -239,8 +239,7 @@ export default function InstitutionalPage() {
                         <div className="flex items-start gap-2">
                             <Info className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
                             <div className="text-sm text-slate-300">
-                                <strong className="text-white">📚 NƏ DEMƏKDIR:</strong> "Smart Money" institutional investorların hərəkətlərini izləyir.
-                                Hedge funds və pension funds retail investorlardan əvvəl hərəkət edir. Net flow +$4.2B = güclü akkumulyasiya siqnalı.
+                                <strong className="text-white">📚 NƏ DEMƏKDIR:</strong> {`"Smart Money" institutional investorların hərəkətlərini izləyir. Hedge funds və pension funds retail investorlardan əvvəl hərəkət edir. Net flow +$4.2B = güclü akkumulyasiya siqnalı.`}
                             </div>
                         </div>
                     </div>
@@ -587,8 +586,7 @@ export default function InstitutionalPage() {
 
                     <div className="mt-4 bg-slate-900/50 rounded-lg p-4 border border-slate-700/50">
                         <div className="text-sm text-slate-300">
-                            <strong className="text-white">📚 NIYƏ ÖNƏMLİDİR?</strong> Bu investorlar bazarı "döyən" track record-a sahibdirlər.
-                            Onların hərəkətləri çox vaxt bazardan 3-6 ay əvvəl olur. Buffett satdıqda ehtiyatlı olun, amma Tepper aldıqda diqqət edin.
+                            <strong className="text-white">📚 NIYƏ ÖNƏMLİDİR?</strong> {`Bu investorlar bazarı "döyən" track record-a sahibdirlər. Onların hərəkətləri çox vaxt bazardan 3-6 ay əvvəl olur. Buffett satdıqda ehtiyatlı olun, amma Tepper aldıqda diqqət edin.`}
                         </div>
                     </div>
                 </Card>
@@ -669,13 +667,13 @@ export default function InstitutionalPage() {
                                 key={index}
                                 onClick={() => setSelectedRecommendation(index)}
                                 className={`w-full text-left p-3 rounded-lg border transition-all ${selectedRecommendation === index
-                                        ? "bg-blue-950/50 border-blue-500/50"
-                                        : "bg-slate-800/50 border-slate-700/50 hover:border-slate-600"
+                                    ? "bg-blue-950/50 border-blue-500/50"
+                                    : "bg-slate-800/50 border-slate-700/50 hover:border-slate-600"
                                     }`}
                             >
                                 <div className="flex items-center justify-between mb-1">
                                     <span className={`text-sm font-semibold ${rec.type === "Aggressive" ? "text-green-400" :
-                                            rec.type === "Conservative" ? "text-yellow-400" : "text-blue-400"
+                                        rec.type === "Conservative" ? "text-yellow-400" : "text-blue-400"
                                         }`}>
                                         {rec.type}
                                     </span>
